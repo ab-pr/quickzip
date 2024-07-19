@@ -1,0 +1,51 @@
+#!/bin/bash
+
+Zip() {
+    local fileName="$1"
+    local baseName="${fileName%.*}"
+
+    echo "Handling zip file: $fileName"
+
+	mkdir $baseName
+	mv $fileName $baseName
+	cd $baseName
+	unzip $fileName
+	cd ..
+}
+
+Tar() {
+    local fileName="$1"
+    local baseName="${fileName%.*}"
+
+    echo "Handling tar file: $fileName"
+
+	mkdir $baseName
+	mv $fileName $baseName
+	cd $baseName
+	tar -xvf $fileName
+	cd ..
+}
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 --zip|--tar <fileName>"
+    exit 1
+fi
+
+flag="$1"
+fileName="$2"
+
+case "$flag" in
+    --zip)
+        Zip "$fileName"
+		;;
+
+    --tar)
+        Tar "$fileName"
+		;;
+    *)
+        echo "Invalid flag: $flag"
+        echo "Usage: $0 --zip|--tar <fileName>"
+        exit 1
+        ;;
+esac
+
